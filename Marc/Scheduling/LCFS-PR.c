@@ -1,7 +1,13 @@
 #include "LCFS-PR.h"
 
-void schedule_LCFS_PR(const TaskPool *task_pool) 
+void schedule_LCFS_PR(const TaskPool *task_pool)
 {
-    //TODO
-    printf("NOT IMPLEMENTED!\n");
+  while(!allDone(task_pool)) {
+    // get arrival
+
+
+
+  }
+
+  printf("NOT IMPLEMENTED!\n");
 }

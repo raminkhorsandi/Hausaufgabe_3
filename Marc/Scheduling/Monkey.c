@@ -14,7 +14,7 @@ void schedule_Monkey(const TaskPool *task_pool) {
 
         //NOTE: This is where you execute the Task for however long you need...
         //      (Could be one tick, could be several... it really depends on YOUR OWN ideas).
-        if (execTask(CPU, 1) < 0) {
+        if (execTask(CPU, 2) < 0) {
             printf("%sERROR:%s No Task selected to be executed.\n", COLOR_RED, COLOR_RESET);
             break;
         }
