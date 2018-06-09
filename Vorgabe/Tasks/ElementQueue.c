@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
-ElementQueue* createElem(const Task *ta){
+ElementQueue* createElem(Task *ta){
     ElementQueue *new_Elem;
     
     new_Elem = (ElementQueue *) malloc(sizeof(ElementQueue));
@@ -16,14 +16,14 @@ ElementQueue* createElem(const Task *ta){
     
     return new_Elem;
 }
-
+//Anfang Methoden LCFS--------------------------------------------
 ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last){
     last->next = new_Elem;
     new_Elem->prev = last;
     return new_Elem;
 }
 
-ElementQueue* execLCFS(const ElementQueue *last){
+ElementQueue* execLCFS(ElementQueue *last){
     if(execTask(last->task, last->task->total_ticks) > 0){     //if Task succesfully executed
         if(isDone(last->task)){ //Nehme Element aus der Queue
             last = last->prev; //new Last
@@ -35,6 +35,7 @@ ElementQueue* execLCFS(const ElementQueue *last){
             printf("%sERROR:%s Something went wrong with execLCFS(const *ElementQueue last).\n", COLOR_RED, COLOR_RESET);
             return NULL; //not succesfull
         }
+    }
 }
 
 
