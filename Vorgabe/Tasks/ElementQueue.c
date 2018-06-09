@@ -24,17 +24,18 @@ ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last){
 }
 
 ElementQueue* execLCFS(ElementQueue *last){
-    if(execTask(last->task, last->task->total_ticks) > 0){     //if Task succesfully executed
+    if(execTask(last->task, 1) > 0){     //if Task 1-Tick succesfully executed
         if(isDone(last->task)){ //Nehme Element aus der Queue
             last = last->prev; //new Last
-            free(last->next);
+            //free(last->next);
             last->next = NULL;
             return last;
         }
-        else{
-            printf("%sERROR:%s Something went wrong with execLCFS(const *ElementQueue last).\n", COLOR_RED, COLOR_RESET);
-            return NULL; //not succesfull
-        }
+        return last;
+    }
+    else{
+        printf("%sERROR:%s Something went wrong with execLCFS(const *ElementQueue last) See line 35 of ElementQueue.c.\n", COLOR_RED, COLOR_RESET);
+        return NULL; //not succesfull
     }
 }
 

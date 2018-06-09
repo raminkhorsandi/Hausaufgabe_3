@@ -9,7 +9,6 @@ void schedule_LCFS(const TaskPool *task_pool){
     int currTick = 0;
     
     ElementQueue* last = NULL;//Queue empty
-    ElementQueue* oldLast = NULL;
     
     while(!allDone(task_pool)){
         
@@ -22,7 +21,7 @@ void schedule_LCFS(const TaskPool *task_pool){
                 last = createElem(checkArrivals(task_pool,currTick));   // create new Queue Element
             }
             else{//If Queue not empty
-                last = addLCFS(createElem(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue with the constraint LCFS
+                last = addLCFS(createElem(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue with the constraint LastComeFirstServed
             }
             currTick++;
         }

@@ -7,7 +7,7 @@
 #ifndef ElementQueue_H
 #define ElementQueue_H
 
-typedef struct _ElementQueue{//TaskQueueElement
+typedef struct ElementQueue{//TaskQueueElement
     Task *task;    //current Task
     struct ElementQueue *prev;    //previous QueueElement
     struct ElementQueue *next;    //next QueueElement
@@ -30,7 +30,7 @@ ElementQueue* createElem(Task *ta);
 ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last);
 
 /**
- *@brief    execute the last Element of the Queue
+ *@brief    execute 1 Tick of the last Element of the Queue
  *@param    elem    Last Element of the Queue;
  *@return   new Last Element of the Queue 
  */
