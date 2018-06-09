@@ -4,12 +4,15 @@
 #include "../Termcolor.h"
 #include "../Bool.h"
 
+#ifndef ELEMENTQUEUE_H
+#define ELEMENTQUEUE
+
 typedef struct _ElementQueue{//TaskQueueElement
     Task **task;    //current Task
     Task **prev;    //previous Task
     Task **next;    //next Task
     //bool last;      //is this Task the last Element of the queue?
-}
+} ElementQueue;
 
 
 /**
@@ -31,3 +34,4 @@ ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last);
  *@return   new Last Element of the Queue 
  */
 ElementQueue* execLCFS(const ElementQueue *last);
+#endif
