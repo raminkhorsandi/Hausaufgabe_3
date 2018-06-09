@@ -28,7 +28,7 @@ ElementQueue* execLCFS(ElementQueue *last){
         if(isDone(last->task)){ //Nehme Element aus der Queue
             last = last->prev; //new Last
             //free(last->next);
-            last->next = NULL;
+            //last->next = NULL;
             return last;
         }
         return last;

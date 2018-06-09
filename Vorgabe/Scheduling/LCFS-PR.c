@@ -11,7 +11,6 @@ void schedule_LCFS_PR(const TaskPool *task_pool){
     while(!allDone(task_pool)){
         
         if(checkArrivals(task_pool,currTick)==NULL){//if keine Arrivals at current Tick
-            currTick++;
         }
         else{ //else Task arrives at the current tick
             
@@ -21,11 +20,11 @@ void schedule_LCFS_PR(const TaskPool *task_pool){
             else{//If Queue not empty
                 last = addLCFS(createElem(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue with the constraint LastComeFirstServed
             }
-            currTick++;
         }
         if(last != NULL){ //if Queue not empty
             last = execLCFS(last);
         }
+        currTick++;
     }
     //Last check if all Tasks were succesfully executed
     if(!allDone(task_pool)){
