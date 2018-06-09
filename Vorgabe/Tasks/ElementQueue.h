@@ -23,11 +23,11 @@ ElementQueue* createElem(const Task *ta);
  *@param    elem    Last Element of the Queue;
  *@return   new last Element of the Queue
 */
-ElementQueue* addLCFS(*ElementQueue new_Elem, *ElementQueue last);
+ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last);
 
 /**
  *@brief    execute the last Element of the Queue
  *@param    elem    Last Element of the Queue;
  *@return   new Last Element of the Queue 
  */
-ElementQueue* execLCFS(const *ElementQueue last);
+ElementQueue* execLCFS(const ElementQueue *last);

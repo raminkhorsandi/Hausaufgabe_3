@@ -17,13 +17,13 @@ ElementQueue* createElem(const Task *ta){
     return new_Elem;
 }
 
-ElementQueue* addLCFS(*ElementQueue new_Elem, *ElementQueue last){
+ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last){
     last->next = new_Elem;
     new_Elem->prev = last;
     return new_Elem;
 }
 
-ElementQueue* execLCFS(const *ElementQueue last){
+ElementQueue* execLCFS(const ElementQueue *last){
     if(execTask(last->task, last->task->total_ticks) > 0){     //if Task succesfully executed
         if(isDone(last->task)){ //Nehme Element aus der Queue
             last = last->prev; //new Last
