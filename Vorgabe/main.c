@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     schedule(task_pool, LCFS, 0);
 
     allReset(task_pool);
-    printf("LCFS_PR:");
+    //printf("LCFS_PR:");
     schedule(task_pool, LCFS_PR, 0);
 
     allReset(task_pool);

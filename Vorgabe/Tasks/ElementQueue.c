@@ -96,7 +96,7 @@ ElementQueue* createHRRN(Task *ta){
 }
 
 ElementQueue* addHRRN(ElementQueue *new_Elem, ElementQueue *last){
-    if(!isDone(last->task)){//Falls last noch nicht zu Ende ist,ist es immer noch das letzte Element der Queue da nicht Verdraengend!
+    if(!isDone(last->task)){//Falls last noch nicht zu Ende ist, ist es immer noch das letzte Element der Queue da nicht Verdraengend!
         if(last->prev != NULL){//NUR wenn ein Task vor das letzte Element sich befindet, soll diese veraendert werden
             last->prev->next = new_Elem;//last->prev ist NULL!!!
             new_Elem->prev = last->prev;
@@ -105,10 +105,13 @@ ElementQueue* addHRRN(ElementQueue *new_Elem, ElementQueue *last){
         last->prev = new_Elem;
         return last;    //last ist immer noch dran
     }
-    else{//Else ist last zu Ende bearbeitet
-        last->next = new_Elem;
-        new_Elem->prev = last;
-        return new_Elem;
+    else{//falls last zu Ende bearbeitet hat -> nehme last aus der Queue
+        //last->next = new_Elem;
+        if(last->prev != NULL){
+            last->prev->next = new_Elem;
+            new_Elem->prev = last->prev;
+        }
+        return new_Elem; //returned element wird zu last
     }
 }
 
