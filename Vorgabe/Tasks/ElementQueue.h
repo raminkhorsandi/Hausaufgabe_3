@@ -74,5 +74,19 @@ ElementQueue* addHRRN(ElementQueue *new_Elem, ElementQueue *last);
  */
 ElementQueue* execHRRN(ElementQueue *last);
 
+//Methoden SRTN----------------------------------------------------------------------------------------------
+/**
+ *@brief    create an Element of the queue and add the Element to queue for SRTN
+ *@param    elem    Last Element of the Queue;
+ *@return   new last Element of the Queue
+ */
+ElementQueue* addSRTN(ElementQueue *new_Elem, ElementQueue *last);
+
+/**
+ *@brief    execute 1 Tick of the (shortest remaining time) Element of the Queue
+ *@param    elem    Last Element of the Queue;
+ *@return   new Last Element of the Queue
+ */
+ElementQueue* execSRTN(ElementQueue *last);
 
 #endif
