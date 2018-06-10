@@ -16,6 +16,7 @@ void schedule_HRRN(const TaskPool *task_pool)
                     searcher = searcher->prev;//no need to see last-element
                     searcher->wz++;    //Wartezeit+1 fuer jedes Element das nicht gerade durchgefuehrt wird
                 }
+                searcher = NULL;
             }
         }
         else{ //else Task arrives at the current tick

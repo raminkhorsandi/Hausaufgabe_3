@@ -12,7 +12,6 @@ typedef struct ElementQueue{    //TaskQueueElement
     struct ElementQueue *prev;  //previous QueueElement
     struct ElementQueue *next;  //next QueueElement
     int wz;                     //Wartezeit fuer HRRN
-    int bz;                     //Bedienzeit fuer HRRN
 } ElementQueue;
 
 

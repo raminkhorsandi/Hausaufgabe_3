@@ -91,7 +91,6 @@ ElementQueue* createHRRN(Task *ta){
     new_Elem->prev = NULL;
     new_Elem->next = NULL;
     new_Elem->wz = 0;
-    new_Elem->bz = ta->total_ticks;//Wartezeit und Bedienzeit fuer rr-Berechnung speichern
     
     return new_Elem;
 }
@@ -114,40 +113,42 @@ ElementQueue* addHRRN(ElementQueue *new_Elem, ElementQueue *last){
 }
 
 ElementQueue* execHRRN(ElementQueue *last){
+    
     ElementQueue *searcher;     //elementQueue to search the queue for the highest rr
     int curr = -1;              // current response ratio
     int maxrr = -1;             //highest response ratio
     ElementQueue *max_Elem;     //elementQueue with the highest rr
+    
     if(execTask(last->task, 1) > 0){     //if Task 1-Tick succesfully executed
-        if(isDone(last->task)){ //Nehme Element aus der Queue
+        if(isDone(last->task)){ //if last-element is finished
             //find Task with the highest response rate = ((wz+bz)/bz) in the Queue
             if(last->prev != NULL){ //if last is NOT last Element of the Queue
                 while(searcher->prev != NULL){  //go over all Elements of the queue
                     searcher = searcher->prev;//last is already finished, no need to check its response ratio
-                    curr = (searcher->wz + searcher->bz) / searcher->bz;                  //response-ratio= ((currentTick-Ankunft+1)+Bedienzeit)/Bedienzeit = (wz+bz)/bz <- 2 Alternatives to implement this!
+                    curr = (searcher->wz + searcher->task->total_ticks) / searcher->task->total_ticks;                  //response-ratio= ((currentTick-Ankunft+1)+Bedienzeit)/Bedienzeit = (wz+bz)/bz <- 2 Alternatives to implement this!
                     if(curr > maxrr){
                         maxrr = curr; //set new rr-maximum
                         max_Elem = searcher;
                     }
-                    //now we have the element with the highest response-rate in max_Elem and we know last->task is finished AND that the queue contains at least 2 Elements
-                    if(max_Elem->prev != NULL){ //max_Elem ist Nicht letztes Element des Queues
-                        max_Elem->prev->next = max_Elem->next;
-                        max_Elem->next->prev = max_Elem->prev;
+                }
+                //now we have the element with the highest response-rate in max_Elem and we know last->task is finished AND that the queue contains at least 2 Elements
+                if(max_Elem->prev != NULL){ //max_Elem ist Nicht letztes Element des Queues
+                    max_Elem->prev->next = max_Elem->next;
+                    max_Elem->next->prev = max_Elem->prev;
                         
+                    last->prev->next = max_Elem;
+                    max_Elem->prev = last->prev;
+                        
+                    last = max_Elem;//Element mit highest response-ratio ist jetzt last Element!
+                }
+                else{          //max_Elem ist letztes Element des Queues
+                    max_Elem->next->prev = NULL;
+                        
+                    if(last->prev!=NULL){ //if Queue hat mehr als 2 Eintraege
                         last->prev->next = max_Elem;
                         max_Elem->prev = last->prev;
-                        
-                        last = max_Elem;//Element mit highest response-ratio ist jetzt last Element!
                     }
-                    else{          //max_Elem ist letztes Element des Queues
-                        max_Elem->next->prev = NULL;
-                        
-                        if(last->prev!=NULL){ //if Queue hat mehr als 2 Eintraege
-                            last->prev->next = max_Elem;
-                            max_Elem->prev = last->prev;
-                        }
-                        last = max_Elem;
-                    }
+                    last = max_Elem;
                 }
                 
                 maxrr = -1;     //reset highest response ratio
