@@ -5,8 +5,8 @@ void schedule_HRRN(const TaskPool *task_pool)
     //HRRN ist nicht Verdraengung!
     int currTick = 0;
     
-    ElementQueue* last = NULL;//Queue empty
-    ElementQueue *searcher;   //elementQueue to add Wartezeit + 1
+    ElementQueue *last = NULL;//Queue empty
+    ElementQueue *searcher = NULL;   //elementQueue to add Wartezeit + 1
     while(!allDone(task_pool)){
         if(checkArrivals(task_pool,currTick)==NULL){//if keine Arrivals at current Tick
             if(last != NULL){   //If Queue not empty
@@ -26,7 +26,7 @@ void schedule_HRRN(const TaskPool *task_pool)
                 last = createHRRN(checkArrivals(task_pool,currTick));   // create new HRRN-Queue Element
             }
             else{//If Queue not empty
-                last = addHRRN(createElem(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue
+                last = addHRRN(createHRRN(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue
             }
         }
         if(last != NULL){ //if Queue not empty

@@ -20,7 +20,7 @@ ElementQueue* createElem(Task *ta){
 //Methoden LCFS---------------------------------------------------------------------------------------
 ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last){
     if(!isDone(last->task)){//Falls last noch nicht zu Ende ist,ist es immer noch das letzte Element der Queue da nicht Verdraengend!
-        if(last->prev != NULL){//NUR wenn ein Task vor das letzte Element sich befindet, soll diese veraendert werden
+        if(last->prev != NULL){//NUR wenn (mindestens) ein Task vor das letzte Element sich befindet, soll diese veraendert werden
             last->prev->next = new_Elem;//last->prev ist NULL!!!
             new_Elem->prev = last->prev;
         }
@@ -28,22 +28,29 @@ ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last){
         last->prev = new_Elem;
         return last;    //last ist immer noch dran
     }
-    else{//Else ist last zu Ende bearbeitet
-        last->next = new_Elem;
-        new_Elem->prev = last;
+    else{//Else ist last zu Ende bearbeitet -> free malloc!
+        /*last->next = new_Elem;
+        new_Elem->prev = last;*/
+        if(last->prev != NULL){//Falls last nicht einzige Element der Queue
+            last->prev->next = new_Elem;
+            new_Elem->prev = last->prev;
+        }
+        last->prev = NULL;
+        free(last); //last ist zu Ende->free malloc
         return new_Elem;
     }
 }
 
 ElementQueue* execLCFS(ElementQueue *last){
     if(execTask(last->task, 1) > 0){     //if Task 1-Tick succesfully executed
-        if(isDone(last->task)){ //Nehme Element aus der Queue
+        if(isDone(last->task)){ //Nehme Element aus der Queue und free malloc
             //new Last
             if(last->prev != NULL){
                 ElementQueue *pre;
                 pre = last->prev;
                 pre->next = NULL;
                 last->prev = NULL;
+                free(last);
                 last = pre;
             }
             //free(last->next);
@@ -67,11 +74,21 @@ ElementQueue* addLCFS_PR(ElementQueue *new_Elem, ElementQueue *last){
 
 ElementQueue* execLCFS_PR(ElementQueue *last){
     if(execTask(last->task, 1) > 0){     //if Task 1-Tick succesfully executed
-        if(isDone(last->task)){ //Nehme Element aus der Queue
-            last = last->prev; //new Last
-            //free(last->next);
-            //last->next = NULL;
-            return last;
+        if(isDone(last->task)){ //Nehme Element aus der Queue und free malloc
+            if(last->prev != NULL){//if 2 or more Elements in the Queue
+                ElementQueue *pre;
+                pre = last->prev;
+                pre->next = NULL;
+                last->prev = NULL;
+                free(last);
+                last = pre; //new Last
+                return last;
+            }
+            else{   //Nur noch ein Element in der Queue
+                last->prev = NULL;
+                free(last);
+                return NULL;
+            }
         }
         return last;
     }
@@ -98,34 +115,39 @@ ElementQueue* createHRRN(Task *ta){
 ElementQueue* addHRRN(ElementQueue *new_Elem, ElementQueue *last){
     if(!isDone(last->task)){//Falls last noch nicht zu Ende ist, ist es immer noch das letzte Element der Queue da nicht Verdraengend!
         if(last->prev != NULL){//NUR wenn ein Task vor das letzte Element sich befindet, soll diese veraendert werden
-            last->prev->next = new_Elem;//last->prev ist NULL!!!
+            last->prev->next = new_Elem;//last->prev ist NULL!!!??
             new_Elem->prev = last->prev;
         }
         new_Elem->next = last;
         last->prev = new_Elem;
+        
+        new_Elem->wz = new_Elem->wz + 1; //new_Elem wartet eine Zeiteinheit wenn last immer noch dran isr
+        
         return last;    //last ist immer noch dran
     }
-    else{//falls last zu Ende bearbeitet hat -> nehme last aus der Queue
+    else{//falls last zu Ende bearbeitet hat -> nehme last aus der Queue und free malloc!
         //last->next = new_Elem;
         if(last->prev != NULL){
             last->prev->next = new_Elem;
             new_Elem->prev = last->prev;
         }
+        free(last);
         return new_Elem; //returned element wird zu last
     }
 }
 
 ElementQueue* execHRRN(ElementQueue *last){
     
-    ElementQueue *searcher;     //elementQueue to search the queue for the highest rr
+    ElementQueue *searcher = NULL;;     //elementQueue to search the queue for the highest rr
     int curr = -1;              // current response ratio
     int maxrr = -1;             //highest response ratio
-    ElementQueue *max_Elem;     //elementQueue with the highest rr
+    ElementQueue *max_Elem = NULL;     //elementQueue with the highest rr
     
     if(execTask(last->task, 1) > 0){     //if Task 1-Tick succesfully executed
         if(isDone(last->task)){ //if last-element is finished
             //find Task with the highest response rate = ((wz+bz)/bz) in the Queue
             if(last->prev != NULL){ //if last is NOT last Element of the Queue
+                searcher = last;
                 while(searcher->prev != NULL){  //go over all Elements of the queue
                     searcher = searcher->prev;//last is already finished, no need to check its response ratio
                     curr = (searcher->wz + searcher->task->total_ticks) / searcher->task->total_ticks;                  //response-ratio= ((currentTick-Ankunft+1)+Bedienzeit)/Bedienzeit = (wz+bz)/bz <- 2 Alternatives to implement this!
@@ -141,16 +163,25 @@ ElementQueue* execHRRN(ElementQueue *last){
                         
                     last->prev->next = max_Elem;
                     max_Elem->prev = last->prev;
-                        
+                    max_Elem->next = NULL;
+                    
+                    last->prev = NULL;
+                    free(last);
+                    
                     last = max_Elem;//Element mit highest response-ratio ist jetzt last Element!
                 }
-                else{          //max_Elem ist letztes Element des Queues
+                else{          //max_Elem hat kein prev
                     max_Elem->next->prev = NULL;
                         
-                    if(last->prev!=NULL){ //if Queue hat mehr als 2 Eintraege
-                        last->prev->next = max_Elem;
+                    if(last->prev != NULL && last->prev != max_Elem){ //if Queue hat mehr als 2 Eintraege
+                        last->prev->next = max_Elem; //Hier ist der Fehler!! see wieso last->prev = NULL ist
                         max_Elem->prev = last->prev;
                     }
+                    max_Elem->next = NULL;
+                    
+                    last->prev = NULL;
+                    free(last);
+                    
                     last = max_Elem;
                 }
                 
