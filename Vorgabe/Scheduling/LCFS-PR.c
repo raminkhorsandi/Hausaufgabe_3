@@ -1,7 +1,7 @@
 #include "LCFS-PR.h"
 
 void schedule_LCFS_PR(const TaskPool *task_pool){
-    //LCFS ist nicht Verdraengend!
+    //LCFS ist Verdraengend!
     //Define new Task
     
     int currTick = 0;
@@ -18,11 +18,11 @@ void schedule_LCFS_PR(const TaskPool *task_pool){
                 last = createElem(checkArrivals(task_pool,currTick));   // create new Queue Element
             }
             else{//If Queue not empty
-                last = addLCFS(createElem(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue with the constraint LastComeFirstServed
+                last = addLCFS_PR(createElem(checkArrivals(task_pool,currTick)), last); //add new Element to the Queue with the constraint LastComeFirstServed
             }
         }
         if(last != NULL){ //if Queue not empty
-            last = execLCFS(last);
+            last = execLCFS_PR(last);
         }
         currTick++;
     }

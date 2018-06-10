@@ -11,6 +11,7 @@ void schedule_LCFS(const TaskPool *task_pool){
     ElementQueue* last = NULL;//Queue empty
     
     while(!allDone(task_pool)){
+        
         if(checkArrivals(task_pool,currTick)==NULL){//if keine Arrivals at current Tick
         }
         else{ //else Task arrives at the current tick
@@ -29,7 +30,7 @@ void schedule_LCFS(const TaskPool *task_pool){
     }
     //Last check if all Tasks were succesfully executed
     if(!allDone(task_pool)){
-        printf("Taskpool didn't complete all Tasks! See LCFS.c line 32");
+        printf("Taskpool didn't complete all Tasks!");
     }
     printf("\n");
     return;

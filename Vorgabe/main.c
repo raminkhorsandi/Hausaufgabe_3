@@ -25,27 +25,27 @@ int main(int argc, char *argv[]) {
     printf("\n");
 
     //NOTE: You can uncomment this line, to see what the ouput should look like.
-    printf("Monkey: ");
-    schedule(task_pool, MONKEY, 0);
+    //printf("Monkey: ");
+    //schedule(task_pool, MONKEY, 0);
 
     allReset(task_pool);
     printf("LCFS:   ");
     schedule(task_pool, LCFS, 0);
 
     allReset(task_pool);
-    printf("LCFS_PR:    ");
+    printf("LCFS_PR:");
     schedule(task_pool, LCFS_PR, 0);
 
     allReset(task_pool);
-    printf("SRTN:     ");
+    printf("SRTN:    ");
     schedule(task_pool, SRTN, 0);
     
     allReset(task_pool);
-    printf("HRRN:     ");
+    printf("HRRN:   ");
     schedule(task_pool, HRRN, 0);
 
     allReset(task_pool);
-    printf("MLF:    ");
+    printf("MLF:   ");
     schedule(task_pool, MLF, MLF_args);
 
     freeTaskPool(task_pool);

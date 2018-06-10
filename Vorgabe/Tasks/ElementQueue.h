@@ -21,18 +21,35 @@ typedef struct ElementQueue{//TaskQueueElement
 */
 ElementQueue* createElem(Task *ta);
 
-//Anfang Methoden LCFS--------------------------------------------
+
+//Methoden LCFS-----------------------------------------------
+/**
+ *@brief    create an Element of the queue and add the Element to queue for LCFS, meaning last Element comes First in the Queue sequence
+ *@param    elem    Last Element of the Queue;
+ *@return   new last Element of the Queue
+ */
+ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last);
+
+/**
+ *@brief    execute 1 Tick of the last Element of the Queue
+ *@param    elem    Last Element of the Queue;
+ *@return   new Last Element of the Queue
+ */
+ElementQueue* execLCFS(ElementQueue *last);
+
+
+//Methoden LCFS-PR-----------------------------------------------
 /**
  *@brief    create an Element of the queue and add the Element to queue for LCFS, meaning last Element comes First in the Queue sequence
  *@param    elem    Last Element of the Queue;
  *@return   new last Element of the Queue
 */
-ElementQueue* addLCFS(ElementQueue *new_Elem, ElementQueue *last);
+ElementQueue* addLCFS_PR(ElementQueue *new_Elem, ElementQueue *last);
 
 /**
  *@brief    execute 1 Tick of the last Element of the Queue
  *@param    elem    Last Element of the Queue;
  *@return   new Last Element of the Queue 
  */
-ElementQueue* execLCFS(ElementQueue *last);
+ElementQueue* execLCFS_PR(ElementQueue *last);
 #endif
